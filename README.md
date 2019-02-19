@@ -1,6 +1,6 @@
 # vue-electron
 
-> An electron-vue project
+> 资源管理器
 
 #### Build Setup
 

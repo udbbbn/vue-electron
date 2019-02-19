@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-show="show">
     <section class="card-hdd">
       <div class="head-hdd">
         <img :src="imgHdd" alt="" class="img-hdd">
@@ -29,14 +29,16 @@ export default {
   props: {
     data: {
       type: Object,
-      default: {}
+      default: function () {
+        return {}
+      }
     },
     show: {
       type: Boolean,
       default: false
     }
   },
-  data() {
+  data () {
     return {
       imgHdd: require('../assets/disk-ssd.png')
     }

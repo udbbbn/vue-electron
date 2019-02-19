@@ -7,18 +7,18 @@
 
 <script type="text/ecmascript-6">
 export default {
-  data() {
+  data () {
     return {
-        count: 0
+      count: 0
     }
   },
   components: {
-      
+
   },
   methods: {
-      increment() {
-          this.count++
-      }
+    increment () {
+      this.count++
+    }
   }
 }
 </script>

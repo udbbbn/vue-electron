@@ -2,6 +2,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+const Index = resolve => {
+  import('@/components/index').then(module => {
+    resolve(module)
+  })
+}
+
+const Folder = resolve => {
+  import('@/components/folder').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -9,11 +20,22 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: require('@/components/index').default
+      // component: require('@/components/index').default
+      component: Index
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/computer'
+    },
+    {
+      path: '/computer',
+      name: 'index',
+      component: Index,
+      children: [{
+        path: '/computer/:id',
+        name: 'folder',
+        component: Folder
+      }]
     }
   ]
 })

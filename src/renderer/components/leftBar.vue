@@ -56,68 +56,74 @@
 </template>
 
 <script type="text/ecmascript-6">
-import os from 'os';
-import { toMem } from '@/extend/filter';
-import { constants } from 'http2';
-var wmic = require('node-wmic');
+import os from 'os'
+import { constants } from 'http2'
+var wmic = require('node-wmic')
 export default {
-  data() {
+  data () {
     return {
-        os : '',
-        cpuName: '',
-        numberOfCores: '',
-        currentClockSpeed: '',
-        l2CacheSize: '',
-        l3CacheSize: '',
-        LoadPercentage: 0,
-        percentMem: parseInt((os.totalmem() - os.freemem()) / os.totalmem() * 100)
+      os: '',
+      cpuName: '',
+      numberOfCores: '',
+      currentClockSpeed: '',
+      l2CacheSize: '',
+      l3CacheSize: '',
+      LoadPercentage: 0,
+      percentMem: parseInt((os.totalmem() - os.freemem()) / os.totalmem() * 100),
     }
   },
   components: {
 
   },
-  created() {
-      this.getOSInfo();
-  },
-  filters: {
-    toMem: toMem
+  created () {
+    this.getOSInfo()
   },
   computed: {
-      kernel() {
-        return os.type();
-      },
-      platform() {
-        return os.platform();
-      },
-      hostname() {
-        return os.hostname();
-      },
-      usedmem() {
-        return os.totalmem - os.freemem();
-      },
-      freemem() {
-        return os.freemem();
-      },
-      totalmem() {
-        return os.totalmem();
-      }
+    kernel () {
+      return os.type()
+    },
+    platform () {
+      return os.platform()
+    },
+    hostname () {
+      return os.hostname()
+    },
+    usedmem () {
+      return os.totalmem - os.freemem()
+    },
+    freemem () {
+      return os.freemem()
+    },
+    totalmem () {
+      return os.totalmem()
+    }
   },
   methods: {
-    getOSInfo() {
-        let vm = this;
-        wmic.OS().then(data => {
-            vm.os = data[0].Caption;
-        });
-        wmic.CPU().then(data => {
-          vm.cpuName = data[0].Name;
-          vm.numberOfCores = data[0].NumberOfCores;
-          vm.currentClockSpeed = data[0].CurrentClockSpeed;
-          vm.l2CacheSize = data[0].L2CacheSize;
-          vm.l3CacheSize = data[0].L3CacheSize;
-          vm.LoadPercentage = parseInt(data[0].LoadPercentage)
-        });
+    getOSInfo () {
+      let vm = this
+      wmic.os().then(data => {
+        vm.os = data.Caption
+      })
+      wmic.cpu().then(data => {
+        vm.cpuName = data.Name
+        vm.numberOfCores = data.NumberOfCores
+        vm.currentClockSpeed = data.CurrentClockSpeed
+        vm.l2CacheSize = data.L2CacheSize
+        vm.l3CacheSize = data.L3CacheSize
+        vm.LoadPercentage = parseInt(data.LoadPercentage)
+      })
     }
-  }
+  },
+    watch: {
+      LoadPercentage () {
+        wmic.cpu().then(data => {
+          this.LoadPercentage = parseInt(data.LoadPercentage)
+        })
+      },
+      percentMem () {
+        this.percentMem = parseInt((os.totalmem() - os.freemem()) / os.totalmem() * 100)
+      }
+    }
 }
 </script>
 
